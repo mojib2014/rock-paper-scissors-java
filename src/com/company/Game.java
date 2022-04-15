@@ -3,7 +3,7 @@ package com.company;
 import java.util.Scanner;
 
 public class Game {
-    // Properties;
+    // Properties/Fields or members
     private String name;
     private String choice;
     private int score;
@@ -16,14 +16,14 @@ public class Game {
     public void play() {
         logGameDetails();
 
-        // Computer stuff
+        // Computer instance/name
         Game computer = new Game();
         computer.setName("Computer");
 
-        // Player stuff
+        // Player instance/name
         System.out.println("Please enter your name?");
         Game player = new Game();
-        String playerName = scanner.nextLine();
+        String playerName = capitalize(scanner.nextLine());
         player.setName(playerName);
 
         while(winner == false) {
@@ -34,14 +34,13 @@ public class Game {
             System.out.println();
             logChoices();
 
-            String choice = scanner.nextLine();
+            String playerChoice = capitalize(scanner.nextLine());
             // rock
             // r => R + ock
-            player.setChoice(choice.substring(0, 1).toUpperCase() + choice.substring(1));
-
+            player.setChoice(playerChoice);
             determineWinner(player, computer);
         }
-
+        scanner.close();
     }
 
     private void determineWinner(Game player, Game computer) {
@@ -86,9 +85,9 @@ public class Game {
     }
 
     private void logChoices() {
-        System.out.println("1. Rock");
-        System.out.println("2. Paper");
-        System.out.println("3. Scissors");
+        for (String choice : computerChoices) {
+            System.out.println("1. " + choice);
+        }
     }
 
     private boolean validateInput(String input) {
@@ -96,18 +95,33 @@ public class Game {
     }
 
     public void setName(String name) {
-        if(name.length() <= 3)
-            throw new IllegalArgumentException();
-        else this.name = name;
+        try {
+            if(name.length() <= 3)
+                throw new IllegalArgumentException();
+            else this.name = name;
+        } catch (IllegalArgumentException e) {
+            System.out.println("Please make a correct choice!");
+            e.getStackTrace();
+        }
+
     }
 
-    public void setChoice(String player1Choice) {
-        if(validateInput(player1Choice))
-            this.choice = player1Choice;
-        else {
+    public void setChoice(String playerChoice) {
+        try {
+            if(validateInput(playerChoice))
+                this.choice = playerChoice;
+            else {
+                throw new IllegalArgumentException();
+            }
+        } catch (IllegalArgumentException e) {
             System.out.println("Please make a correct choice!");
-            throw new IllegalArgumentException();
+            e.getStackTrace();
         }
+
+    }
+
+    private String capitalize(String input) {
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 
 }
