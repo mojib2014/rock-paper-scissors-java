@@ -38,6 +38,9 @@ public class Game {
             // r => R + ock
             player.setChoice(choice.substring(0, 1).toUpperCase() + choice.substring(1));
 
+            if(computer.choice.equals(player.choice)) {
+                System.out.println("It's a Tie!");
+            }
             if(computer.choice.equals("Rock") && player.choice.equals("Scissors") ||
                     computer.choice.equals("Scissors") && player.choice.equals("Paper") ||
                     computer.choice.equals("Paper") && player.choice.equals("Rock")) {
